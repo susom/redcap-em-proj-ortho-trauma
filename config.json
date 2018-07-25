@@ -1,0 +1,88 @@
+{
+  "name": "Ortho Trauma Project",
+
+  "namespace":"Stanford\\ProjOrthoTrauma",
+
+  "description": "Project-specific em",
+
+  "versions": [
+    { "0.1": "Initial" }
+  ],
+
+  "authors": [
+    {
+      "name": "Andrew Martin",
+      "email": "andy123@stanford.edu",
+      "institution": "Stanford University"
+    },
+    {
+      "name": "Jae Lee",
+      "email": "jael@stanford.edu",
+      "institution": "Stanford University"
+    }
+  ],
+
+  "permissions": [
+    "redcap_save_record"
+  ],
+
+  "links": {
+    "control-center": [
+    ],
+    "project": [
+      {
+        "name": "OrthoTrauma Test",
+        "icon": "gear",
+        "url": "test.php"
+      }
+    ]
+  },
+
+  "system-settings": [
+    {
+      "key": "enable-system-debug-logging",
+      "name": "<b>Enable Debug Logging (system-wide)</b>",
+      "required": false,
+      "type": "checkbox"
+    }
+  ],
+
+  "project-settings": [
+    {
+      "key": "enable-project-debug-logging",
+      "name": "<b>Enable Debug Logging</b>",
+      "required": false,
+      "type": "checkbox"
+    },
+    {
+      "key": "parent_project_id",
+      "name": "<b>Parent Project Id</b>",
+      "required": true,
+      "type": "project-id"
+    },
+    {
+      "key": "parent_project_event_id",
+      "name": "<b>Parent Project Event Name (e.g. baseline_arm_1)</b>",
+      "required": false,
+      "type": "text"
+    },
+    {
+      "key": "parent_project_cessation_date_field",
+      "name": "<b>Parent Project Cessation Date Field Name</b>",
+      "required": false,
+      "type": "text"
+    },
+    {
+      "key": "number-of-nos",
+      "name": "<b>How many 'no' consecutive no answers are cessation (e.g. 4)</b>",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "key": "yes-no-field",
+      "name": "<b>Field in this project used to determine cessation (must be yes=1/no=0 field</b>",
+      "required": true,
+      "type": "field-list"
+    }
+  ]
+}
