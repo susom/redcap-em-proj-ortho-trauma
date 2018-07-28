@@ -55,34 +55,40 @@
       "type": "checkbox"
     },
     {
-      "key": "parent_project_id",
+      "key": "parent-project-id",
       "name": "<b>Parent Project Id</b>",
       "required": true,
       "type": "project-id"
     },
     {
-      "key": "parent_project_event_id",
+      "key": "parent-project-event-name",
       "name": "<b>Parent Project Event Name (e.g. baseline_arm_1)</b>",
       "required": false,
       "type": "text"
     },
     {
-      "key": "parent_project_cessation_date_field",
+      "key": "parent-project-cessation-date-field",
       "name": "<b>Parent Project Cessation Date Field Name</b>",
       "required": false,
       "type": "text"
     },
     {
-      "key": "number-of-nos",
-      "name": "<b>How many 'no' consecutive no answers are cessation (e.g. 4)</b>",
+      "key": "survey-fk-field",
+      "name": "<b>Select the field in the survey project that has the record_id for the participant in the main project (e.g. survey_participant_id)</b>",
       "required": true,
-      "type": "text"
+      "type": "field-list"
     },
     {
       "key": "yes-no-field",
       "name": "<b>Field in this project used to determine cessation (must be yes=1/no=0 field</b>",
       "required": true,
       "type": "field-list"
+    },
+    {
+      "key": "number-of-nos",
+      "name": "<b>How many 'no' consecutive no answers are cessation (e.g. 4)</b>",
+      "required": true,
+      "type": "text"
     }
   ]
 }
