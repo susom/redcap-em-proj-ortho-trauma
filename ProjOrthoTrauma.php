@@ -1,7 +1,7 @@
 <?php
 namespace Stanford\ProjOrthoTrauma;
 
-use \Redcap;
+use \REDCap;
 use \Project;
 
 class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
