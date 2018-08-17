@@ -23,7 +23,7 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
         $yes_no_field = $this->getProjectSetting('yes-no-field');
         $yn_val = $survey_record[$yes_no_field];
         if ($yn_val == 1) {
-            $this->debug("$record used opiates");
+            $this->emDebug("$record used opiates");
             return;
         }
 
@@ -31,7 +31,7 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
         // Step 3 - get the record_id for the participant in the main project
         $survey_fk_field = $this->getProjectSetting('survey-fk-field');
         $parent_record_id = $survey_record[$survey_fk_field];
-        $this->debug($survey_record, $survey_fk_field, $parent_record_id);
+        $this->emDebug($survey_record, $survey_fk_field, $parent_record_id);
 
 
         // Step 4 - load the 'main' record to see if they have already reached cessation
@@ -47,9 +47,9 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
         $main_record = $records[0];
         $cessation_date = $main_record[$parent_cessation_field];
 
-        $this->debug($main_record, $main_pk_field, $cessation_date);
+        $this->emDebug($main_record, $main_pk_field, $cessation_date);
         if (!empty($cessation_date)) {
-            $this->log("Record $parent_record_id has already completed: $cessation_date");
+            $this->emLog("Record $parent_record_id has already completed: $cessation_date");
             return;
         }
 
@@ -72,7 +72,7 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
         }
         ksort($day_number_map);
         ksort($day_number_yn);
-        $this->debug($day_number_map, $day_number_yn);
+        $this->emDebug($day_number_map, $day_number_yn);
 
         // Step 6 - see if we have reached cessation
         $no_threshold = $this->getProjectSetting('number-of-nos');
@@ -81,23 +81,23 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
         $last_day = 0;
         $run_count = 0;    // Number of consecutive nos
         foreach ($day_number_yn as $day => $yn) {
-            $this->debug("At Day $day - Response $yn - Count $run_count - Last day $last_day");
+            $this->emDebug("At Day $day - Response $yn - Count $run_count - Last day $last_day");
 
             // Did they report using opioids today
             if ($yn !== "0") {
-                $this->debug("Not a no");
+                $this->emDebug("Not a no");
                 $run_count = 0;
             } else {
                 // They did not use today
 
                 // detect gaps which restart the run...
                 if ($day - $last_day > 1 && $run_count !== 0) {
-                    $this->debug("Restarting run count at day $day due to " . ($day - $last_day - 1) . " day gap");
+                    $this->emDebug("Restarting run count at day $day due to " . ($day - $last_day - 1) . " day gap");
                     $run_count = 0;
                 }
 
                 $run_count++;
-                $this->debug("Incrementing run_count to $run_count at day  $day");
+                $this->emDebug("Incrementing run_count to $run_count at day  $day");
 
                 if ($run_count >= $no_threshold) {
                     // We have reached cessation
@@ -105,11 +105,11 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
                     // Get the date for this response
                     $survey_date = $day_number_map[$day]['survey_date'];
 
-                    $this->log("Cessation for $parent_record_id reached on $survey_date - day $day - with run of $run_count");
+                    $this->emLog("Cessation for $parent_record_id reached on $survey_date - day $day - with run of $run_count");
 
                     $main_record[$parent_cessation_field] = $survey_date;
                     $saveResult = REDCap::saveData($parent_project_id, 'json', json_encode(array($main_record)));
-                    $this->debug("Save Results", $saveResult, $main_record);
+                    $this->emDebug("Save Results", $saveResult, $main_record);
 
                     // Break out of loop - no need to go further
                     break;
@@ -126,12 +126,12 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
     }
 
 
-    function log() {
+    function emLog() {
         $emLogger = \ExternalModules\ExternalModules::getModuleInstance('em_logger');
         $emLogger->log($this->PREFIX, func_get_args(), "INFO");
     }
 
-    function debug() {
+    function emDebug() {
         // Check if debug enabled
         if ($this->getSystemSetting('enable-system-debug-logging') || $this->getProjectSetting('enable-project-debug-logging')) {
             $emLogger = \ExternalModules\ExternalModules::getModuleInstance('em_logger');
@@ -139,7 +139,7 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
         }
     }
 
-    function error() {
+    function emError() {
         $emLogger = \ExternalModules\ExternalModules::getModuleInstance('em_logger');
         $emLogger->log($this->PREFIX, func_get_args(), "ERROR");
     }
