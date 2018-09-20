@@ -89,6 +89,12 @@
       "name": "<b>How many 'no' consecutive no answers are cessation (e.g. 4)</b>",
       "required": true,
       "type": "text"
+    },
+    {
+      "key": "allow-gaps",
+      "name": "<b>Check to allow gaps in reporting dates to still reach cessation (e.g. 4 consecutive no's on days 1,2,5,8 would count if checked)</b>",
+      "required": true,
+      "type": "checkbox"
     }
   ]
 }

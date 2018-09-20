@@ -38,6 +38,7 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
         $parent_project_id = $this->getProjectSetting('parent-project-id');
         $parent_event_name = $this->getProjectSetting('parent-project-event-name');
         $parent_cessation_field = $this->getProjectSetting('parent-project-cessation-date-field');
+        $allow_gaps = $this->getProjectSetting('allow-gaps');
 
         $mainProj = new Project($parent_project_id);
         $main_pk_field = $mainProj->table_pk;
@@ -91,9 +92,11 @@ class ProjOrthoTrauma extends \ExternalModules\AbstractExternalModule
                 // They did not use today
 
                 // detect gaps which restart the run...
-                if ($day - $last_day > 1 && $run_count !== 0) {
-                    $this->emDebug("Restarting run count at day $day due to " . ($day - $last_day - 1) . " day gap");
-                    $run_count = 0;
+                if ($allow_gaps == false) {
+                    if ($day - $last_day > 1 && $run_count !== 0) {
+                        $this->emDebug("Restarting run count at day $day due to " . ($day - $last_day - 1) . " day gap");
+                        $run_count = 0;
+                    }
                 }
 
                 $run_count++;
